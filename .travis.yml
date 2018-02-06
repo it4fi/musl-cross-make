@@ -1,11 +1,26 @@
 language: c
 compiler: gcc
 env:
-- TRIPLET=i486-linux-musl
-- TRIPLET=x86_64-linux-musl
-- TRIPLET=arm-linux-musleabi
-- TRIPLET=arm-linux-musleabihf
-- TRIPLET=aarch64-linux-musl
+- TRIPLET=i486-linux-musl GCCVER=7.2.0
+- TRIPLET=x86_64-linux-musl GCCVER=7.2.0
+- TRIPLET=arm-linux-musleabi GCCVER=7.2.0
+- TRIPLET=arm-linux-musleabihf GCCVER=7.2.0
+- TRIPLET=aarch64-linux-musl GCCVER=7.2.0
+- TRIPLET=i486-linux-musl GCCVER=4.9.4
+- TRIPLET=x86_64-linux-musl GCCVER=4.9.4
+- TRIPLET=arm-linux-musleabi GCCVER=4.9.4
+- TRIPLET=arm-linux-musleabihf GCCVER=4.9.4
+- TRIPLET=aarch64-linux-musl GCCVER=4.9.4
+- TRIPLET=i486-linux-musl GCCVER=5.5.0
+- TRIPLET=x86_64-linux-musl GCCVER=5.5.0
+- TRIPLET=arm-linux-musleabi GCCVER=5.5.0
+- TRIPLET=arm-linux-musleabihf GCCVER=5.5.0
+- TRIPLET=aarch64-linux-musl GCCVER=5.5.0
+- TRIPLET=i486-linux-musl GCCVER=6.4.0
+- TRIPLET=x86_64-linux-musl GCCVER=6.4.0
+- TRIPLET=arm-linux-musleabi GCCVER=6.4.0
+- TRIPLET=arm-linux-musleabihf GCCVER=6.4.0
+- TRIPLET=aarch64-linux-musl GCCVER=6.4.0
 script:
 - travis_wait 60 bash -e ${TRAVIS_BUILD_DIR}/.travis.yml.script $TRIPLET
 after_failure:
