@@ -22,6 +22,6 @@ env:
 - TRIPLET=arm-linux-musleabihf GCCVER=6.4.0
 - TRIPLET=aarch64-linux-musl GCCVER=6.4.0
 script:
-- travis_wait 60 bash -e ${TRAVIS_BUILD_DIR}/.travis.yml.script $TRIPLET
+- travis_wait 60 bash -e ${TRAVIS_BUILD_DIR}/.travis.yml.script $TRIPLET $GCCVER
 after_failure:
 - bash -e ${TRAVIS_BUILD_DIR}/.travis.yml.after_failure
