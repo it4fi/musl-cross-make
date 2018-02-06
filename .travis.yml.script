@@ -25,7 +25,7 @@ printf 'COMMON_CONFIG += --disable-nls\n' >> config.mak
 printf 'COMMON_CONFIG += CFLAGS="-g0 -Os" CXXFLAGS="-g0 -Os" LDFLAGS="-s"\n' >> config.mak
 printf 'GCC_CONFIG += --enable-languages=c,c++\n' >> config.mak
 printf 'GCC_CONFIG += --disable-libquadmath --disable-decimal-float\n' >> config.mak
-printf 'GCC_CONFIG += --disable-multilib\n' >> config.mak
+printf 'GCC_CONFIG += --disable-multilib --with-system-zlib\n' >> config.mak
 
 printf 'BINUTILS_VER = %s\n' "${versions[binutils]}" >> config.mak
 printf 'GCC_VER = %s\n' "${versions[gcc]}" >> config.mak
