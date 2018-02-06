@@ -9,6 +9,7 @@ GMP_VER = 6.1.1
 MPC_VER = 1.0.3
 MPFR_VER = 3.1.4
 LINUX_VER = 4.4.10
+ZLIB_VER = 1.2.11
 
 GNU_SITE = https://ftp.gnu.org/pub/gnu
 GCC_SITE = $(GNU_SITE)/gcc
@@ -17,6 +18,7 @@ GMP_SITE = $(GNU_SITE)/gmp
 MPC_SITE = $(GNU_SITE)/mpc
 MPFR_SITE = $(GNU_SITE)/mpfr
 ISL_SITE = http://isl.gforge.inria.fr/
+ZLIB_SITE = https://www.zlib.net/
 
 MUSL_SITE = https://www.musl-libc.org/releases
 MUSL_REPO = git://git.musl-libc.org/musl
@@ -42,6 +44,7 @@ REL_TOP = ../../..
 -include config.mak
 
 SRC_DIRS = gcc-$(GCC_VER) binutils-$(BINUTILS_VER) musl-$(MUSL_VER) \
+	$(if $(ZLIB_VER),zlib-$(ZLIB_VER)) \
 	$(if $(GMP_VER),gmp-$(GMP_VER)) \
 	$(if $(MPC_VER),mpc-$(MPC_VER)) \
 	$(if $(MPFR_VER),mpfr-$(MPFR_VER)) \
@@ -51,7 +54,7 @@ SRC_DIRS = gcc-$(GCC_VER) binutils-$(BINUTILS_VER) musl-$(MUSL_VER) \
 all:
 
 clean:
-	rm -rf gcc-* binutils-* musl-* gmp-* mpc-* mpfr-* isl-* build build-* linux-*
+	rm -rf gcc-* binutils-* musl-* zlib-* gmp-* mpc-* mpfr-* isl-* build build-* linux-*
 
 distclean: clean
 	rm -rf sources
@@ -62,6 +65,7 @@ distclean: clean
 
 ifeq ($(SOURCES),sources)
 
+$(patsubst hashes/%.sha1,$(SOURCES)/%,$(wildcard hashes/zlib*)): SITE = $(ZLIB_SITE)
 $(patsubst hashes/%.sha1,$(SOURCES)/%,$(wildcard hashes/gmp*)): SITE = $(GMP_SITE)
 $(patsubst hashes/%.sha1,$(SOURCES)/%,$(wildcard hashes/mpc*)): SITE = $(MPC_SITE)
 $(patsubst hashes/%.sha1,$(SOURCES)/%,$(wildcard hashes/mpfr*)): SITE = $(MPFR_SITE)
@@ -106,7 +110,7 @@ musl-git-%:
 %: $(SOURCES)/%.tar.gz | $(SOURCES)/config.sub
 	rm -rf $@.tmp
 	mkdir $@.tmp
-	( cd $@.tmp && tar zxvf - ) < $<
+	( cd $@.tmp && tar zxf - ) < $<
 	test ! -d patches/$@ || cat patches/$@/* | ( cd $@.tmp/$@ && patch -p1 )
 	test ! -f $@.tmp/$@/config.sub || cp -f $(SOURCES)/config.sub $@.tmp/$@
 	rm -rf $@
@@ -117,7 +121,7 @@ musl-git-%:
 %: $(SOURCES)/%.tar.bz2 | $(SOURCES)/config.sub
 	rm -rf $@.tmp
 	mkdir $@.tmp
-	( cd $@.tmp && tar jxvf - ) < $<
+	( cd $@.tmp && tar jxf - ) < $<
 	test ! -d patches/$@ || cat patches/$@/* | ( cd $@.tmp/$@ && patch -p1 )
 	test ! -f $@.tmp/$@/config.sub || cp -f $(SOURCES)/config.sub $@.tmp/$@
 	rm -rf $@
@@ -128,7 +132,7 @@ musl-git-%:
 %: $(SOURCES)/%.tar.xz | $(SOURCES)/config.sub
 	rm -rf $@.tmp
 	mkdir $@.tmp
-	( cd $@.tmp && tar Jxvf - ) < $<
+	( cd $@.tmp && tar Jxf - ) < $<
 	test ! -d patches/$@ || cat patches/$@/* | ( cd $@.tmp/$@ && patch -p1 )
 	test ! -f $@.tmp/$@/config.sub || cp -f $(SOURCES)/config.sub $@.tmp/$@
 	rm -rf $@
@@ -162,6 +166,7 @@ $(BUILD_DIR)/config.mak: | $(BUILD_DIR)
 	"MUSL_SRCDIR = $(REL_TOP)/musl-$(MUSL_VER)" \
 	"GCC_SRCDIR = $(REL_TOP)/gcc-$(GCC_VER)" \
 	"BINUTILS_SRCDIR = $(REL_TOP)/binutils-$(BINUTILS_VER)" \
+	$(if $(ZLIB_VER),"ZLIB_SRCDIR = $(REL_TOP)/zlib-$(ZLIB_VER)") \
 	$(if $(GMP_VER),"GMP_SRCDIR = $(REL_TOP)/gmp-$(GMP_VER)") \
 	$(if $(MPC_VER),"MPC_SRCDIR = $(REL_TOP)/mpc-$(MPC_VER)") \
 	$(if $(MPFR_VER),"MPFR_SRCDIR = $(REL_TOP)/mpfr-$(MPFR_VER)") \
