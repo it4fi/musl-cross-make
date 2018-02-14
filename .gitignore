@@ -1,6 +1,9 @@
 /config.mak
 /sources/
 /output/
+/dist/
+/log/
+/tools/
 /binutils-*/
 /gcc-*/
 /musl-*/
