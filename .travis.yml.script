@@ -13,7 +13,7 @@ fi
 declare -A versions
 versions[binutils]=2.28.1
 versions[gcc]=$gccver
-versions[musl]=1.1.18
+versions[musl]=1.1.19
 versions[gmp]=6.1.2
 versions[mpc]=1.0.3
 versions[mpfr]=3.1.6
@@ -45,9 +45,9 @@ mkdir -p log
 mkdir -p dist
 mkdir -p output
 
-make >log/${target} 2>&1
-make install >>log/${target} 2>&1
-make clean >>log/${target} 2>&1
+make -j1 >log/gcc-${gccver}-${target} 2>&1
+make install >>log/gcc-${gccver}-${target} 2>&1
+make clean >>log/gcc-${gccver}-${target} 2>&1
 
 tar -cJf "dist/gcc-${versions[gcc]}-${target}.tar.xz" \
   --owner 0 \
