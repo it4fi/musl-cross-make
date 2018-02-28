@@ -10,15 +10,33 @@ if [[ -z "$gccver" ]]; then
     exit 1
 fi
 
-declare -A versions
-versions[binutils]=2.28.1
-versions[gcc]=$gccver
-versions[musl]=1.1.19
-versions[gmp]=6.1.2
-versions[mpc]=1.0.3
-versions[mpfr]=3.1.6
-versions[isl]=0.18
-versions[linux]=4.4.10
+versions__binutils=2.28.1
+versions__gcc=$gccver
+versions__musl=1.1.19
+versions__gmp=6.1.2
+versions__mpc=1.0.3
+versions__mpfr=3.1.6
+versions__isl=0.18
+versions__linux=4.4.10
+
+if command -v nproc 1>/dev/null 2>&1 ; then
+    J=$(nproc)
+else
+    J=$(sysctl -n hw.ncpu 2>/dev/null)
+fi
+
+if [ -z "${J}" ] ; then
+    J=1
+fi
+
+if command -v sha1sum 1>/dev/null 2>&1 ; then
+    SHASUM=sha1sum
+elif command -v shasum 1>/dev/null 2>&1 ; then
+    SHASUM="shasum -a 1"
+else
+    printf 'Unable to find suitable shasum, bailing\n'
+    exit 1
+fi
 
 printf 'TARGET = %s\n' "$target" > config.mak
 
@@ -28,14 +46,15 @@ printf 'GCC_CONFIG += --enable-languages=c,c++\n' >> config.mak
 printf 'GCC_CONFIG += --disable-libquadmath --disable-decimal-float\n' >> config.mak
 printf 'GCC_CONFIG += --disable-multilib\n' >> config.mak
 
-printf 'BINUTILS_VER = %s\n' "${versions[binutils]}" >> config.mak
-printf 'GCC_VER = %s\n' "${versions[gcc]}" >> config.mak
-printf 'MUSL_VER = %s\n' "${versions[musl]}" >> config.mak
-printf 'GMP_VER = %s\n' "${versions[gmp]}" >> config.mak
-printf 'MPC_VER = %s\n' "${versions[mpc]}" >> config.mak
-printf 'MPFR_VER = %s\n' "${versions[mpfr]}" >> config.mak
-printf 'ISL_VER = %s\n' "${versions[isl]}" >> config.mak
-printf 'LINUX_VER = %s\n' "${versions[linux]}" >> config.mak
+printf 'BINUTILS_VER = %s\n' "${versions__binutils}" >> config.mak
+printf 'GCC_VER = %s\n' "${versions__gcc}" >> config.mak
+printf 'MUSL_VER = %s\n' "${versions__musl}" >> config.mak
+printf 'GMP_VER = %s\n' "${versions__gmp}" >> config.mak
+printf 'MPC_VER = %s\n' "${versions__mpc}" >> config.mak
+printf 'MPFR_VER = %s\n' "${versions__mpfr}" >> config.mak
+printf 'ISL_VER = %s\n' "${versions__isl}" >> config.mak
+printf 'LINUX_VER = %s\n' "${versions__linux}" >> config.mak
+printf 'SHASUM = %s\n' "${SHASUM}" >> config.mak
 
 if [[ -n "$extra_config" ]] ; then
     printf '%s\n' "${extra_config}" >> config.mak
@@ -45,11 +64,11 @@ mkdir -p log
 mkdir -p dist
 mkdir -p output
 
-make -j$(nproc)
+make -j${J}
 make install
 make clean
 
-tar -cJf "dist/gcc-${versions[gcc]}-${target}.tar.xz" \
+tar -cJf "dist/gcc-${versions__gcc}-${target}.tar.xz" \
   --owner 0 \
   --group 0 \
  -C output .
@@ -58,11 +77,17 @@ rm -rf output
 
 rm -f dist/gcc-${gccver}-manifest.txt
 touch dist/gcc-${gccver}-manifest.txt
-for i in "${!versions[@]}"; do
-    printf '%s=%s\n' "${i}" "${versions[$i]}" >> dist/gcc-${gccver}-manifest.txt
-done
+
+printf 'binutils=%s\n' "${versions__binutils}"
+printf 'gcc=%s\n' "${versions__gcc}"
+printf 'gmp=%s\n' "${versions__gmp}"
+printf 'isl=%s\n' "${versions__isl}"
+printf 'linux=%s\n' "${versions__linux}"
+printf 'musl=%s\n' "${versions__musl}"
+printf 'mpc=%s\n' "${versions__mpc}"
+printf 'mpfr=%s\n' "${versions__mpfr}"
 
 rm -f dist/release.md
 touch dist/release.md
-printf 'Built using `musl-%s`, `linux-headers-%s`\n' "${versions[musl]}" "${versions[linux]}" >> dist/release.md
+printf 'Built using `musl-%s`, `linux-headers-%s`\n' "$versions__musl}" "${versions__linux}" >> dist/release.md
 
