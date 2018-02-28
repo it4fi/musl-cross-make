@@ -15,7 +15,7 @@ github-release \
   --description "$(cat dist/release.md)" || true
 
 github-release \
-  release \
+  upload \
   --user "${USERNAME}" \
   --repo "${REPONAME}" \
   --tag "${TRAVIS_TAG}" \
@@ -23,7 +23,7 @@ github-release \
   --file "dist/manifest/gcc-$GCCVER.txt" || true
 
 exec github-release \
-  release \
+  upload \
   --user "${USERNAME}" \
   --repo "${REPONAME}" \
   --tag "${TRAVIS_TAG}" \
