@@ -17,7 +17,6 @@ GMP_SITE = $(GNU_SITE)/gmp
 MPC_SITE = $(GNU_SITE)/mpc
 MPFR_SITE = $(GNU_SITE)/mpfr
 ISL_SITE = http://isl.gforge.inria.fr/
-ZLIB_SITE = https://www.zlib.net/
 
 MUSL_SITE = https://www.musl-libc.org/releases
 MUSL_REPO = git://git.musl-libc.org/musl
@@ -25,7 +24,7 @@ MUSL_REPO = git://git.musl-libc.org/musl
 LINUX_SITE = https://cdn.kernel.org/pub/linux/kernel
 LINUX_HEADERS_SITE = http://ftp.barfooze.de/pub/sabotage/tarballs/
 
-DL_CMD = wget -c -O
+DL_CMD = wget --quiet -c -O
 
 COWPATCH = $(PWD)/cowpatch.sh
 
@@ -38,7 +37,6 @@ REL_TOP = ../../..
 -include config.mak
 
 SRC_DIRS = gcc-$(GCC_VER) binutils-$(BINUTILS_VER) musl-$(MUSL_VER) \
-	$(if $(ZLIB_VER),zlib-$(ZLIB_VER)) \
 	$(if $(GMP_VER),gmp-$(GMP_VER)) \
 	$(if $(MPC_VER),mpc-$(MPC_VER)) \
 	$(if $(MPFR_VER),mpfr-$(MPFR_VER)) \
@@ -59,7 +57,6 @@ distclean: clean
 
 ifeq ($(SOURCES),sources)
 
-$(patsubst hashes/%.sha1,$(SOURCES)/%,$(wildcard hashes/zlib*)): SITE = $(ZLIB_SITE)
 $(patsubst hashes/%.sha1,$(SOURCES)/%,$(wildcard hashes/gmp*)): SITE = $(GMP_SITE)
 $(patsubst hashes/%.sha1,$(SOURCES)/%,$(wildcard hashes/mpc*)): SITE = $(MPC_SITE)
 $(patsubst hashes/%.sha1,$(SOURCES)/%,$(wildcard hashes/mpfr*)): SITE = $(MPFR_SITE)
@@ -172,7 +169,6 @@ $(BUILD_DIR)/config.mak: | $(BUILD_DIR)
 	"MUSL_SRCDIR = $(REL_TOP)/musl-$(MUSL_VER)" \
 	"GCC_SRCDIR = $(REL_TOP)/gcc-$(GCC_VER)" \
 	"BINUTILS_SRCDIR = $(REL_TOP)/binutils-$(BINUTILS_VER)" \
-	$(if $(ZLIB_VER),"ZLIB_SRCDIR = $(REL_TOP)/zlib-$(ZLIB_VER)") \
 	$(if $(GMP_VER),"GMP_SRCDIR = $(REL_TOP)/gmp-$(GMP_VER)") \
 	$(if $(MPC_VER),"MPC_SRCDIR = $(REL_TOP)/mpc-$(MPC_VER)") \
 	$(if $(MPFR_VER),"MPFR_SRCDIR = $(REL_TOP)/mpfr-$(MPFR_VER)") \
