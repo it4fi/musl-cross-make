@@ -45,9 +45,9 @@ mkdir -p log
 mkdir -p dist
 mkdir -p output
 
-make -j1 >log/gcc-${gccver}-${target} 2>&1
-make install >>log/gcc-${gccver}-${target} 2>&1
-make clean >>log/gcc-${gccver}-${target} 2>&1
+make -j$(nproc)
+make install
+make clean
 
 tar -cJf "dist/gcc-${versions[gcc]}-${target}.tar.xz" \
   --owner 0 \
@@ -62,45 +62,7 @@ for i in "${!versions[@]}"; do
     printf '%s=%s\n' "${i}" "${versions[$i]}" >> dist/gcc-${gccver}-manifest.txt
 done
 
-# exit if TRAVIS_TAG is empty, no need to release anything
-if [ -z "${TRAVIS_TAG}" ]; then
-  exit 0
-fi
-
-
-# download and untar github-release
-wget -nv -O github-release.amd64.tar.bz2 https://github.com/aktau/github-release/releases/download/v0.6.2/linux-amd64-github-release.tar.bz2
-tar xf github-release.amd64.tar.bz2 --strip-components=3
-
-# get user and repo names
-USERNAME=$(echo ${TRAVIS_REPO_SLUG} | cut -d"/" -f1)
-REPONAME=$(echo ${TRAVIS_REPO_SLUG} | cut -d"/" -f2)
-
 rm -f dist/release.md
 touch dist/release.md
 printf 'Built using `musl-%s`, `linux-headers-%s`\n' "${versions[musl]}" "${versions[linux]}" >> dist/release.md
-
-# release
-./github-release release \
-  --user "${USERNAME}" \
-  --repo "${REPONAME}" \
-  --tag "${TRAVIS_TAG}" \
-  --name "${TRAVIS_TAG}" \
-  --description "$(cat dist/release.md)" >>log/${target} 2>&1 || true
-
-# manifest
-./github-release upload \
-  --user "${USERNAME}" \
-  --repo "${REPONAME}" \
-  --tag "${TRAVIS_TAG}" \
-  --name "manifest-gcc-${versions[gcc]}.txt" \
-  --file "dist/manifest.txt" >>log/${target} 2>&1 || true
-
-# compiled gcc
-./github-release upload \
-  --user "${USERNAME}" \
-  --repo "${REPONAME}" \
-  --tag "${TRAVIS_TAG}" \
-  --name "gcc-${versions[gcc]}-${target}.tar.xz" \
-  --file "dist/gcc-${versions[gcc]}-${target}.tar.xz" >>log/${target} 2>&1
 

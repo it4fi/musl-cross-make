@@ -139,12 +139,6 @@ src_gcc_base: | $(GCC_SRCDIR)
 src_musl: | $(MUSL_SRCDIR)
 	ln -sf $(MUSL_SRCDIR) $@
 
-ifneq ($(ZLIB_SRCDIR),)
-src_toolchain: src_zlib
-src_zlib: | $(ZLIB_SRCDIR)
-	ln -sf "$(ZLIB_SRCDIR)" $@
-endif
-
 ifneq ($(GMP_SRCDIR),)
 src_gcc: src_gmp
 src_gmp: | $(GMP_SRCDIR)
@@ -173,7 +167,6 @@ src_gcc: src_gcc_base
 	rm -rf $@ $@.tmp
 	mkdir $@.tmp
 	cd $@.tmp && ln -sf ../src_gcc_base/* .
-	$(if $(ZLIB_SRCDIR),cd $@.tmp && rm -f zlib && ln -sf ../src_zlib zlib)
 	$(if $(GMP_SRCDIR),cd $@.tmp && ln -sf ../src_gmp gmp)
 	$(if $(MPC_SRCDIR),cd $@.tmp && ln -sf ../src_mpc mpc)
 	$(if $(MPFR_SRCDIR),cd $@.tmp && ln -sf ../src_mpfr mpfr)
@@ -203,13 +196,7 @@ obj_binutils/.lc_built: | obj_binutils/.lc_configured
 	cd obj_binutils && $(MAKE) MAKE="$(MAKE)" all
 	touch $@
 
-obj_zlib/.lc_configured: | obj_zlib src_zlib
-	cd obj_zlib && ../src_zlib/configure --static --prefix= $(COMMON_CONFIG)
-
-obj_gcc/zlib: obj_zlib/.lc_built
-	cd obj_gcc && rm -f zlib && ln -s ../obj_zlib zlib
-
-obj_gcc/.lc_configured: | obj_gcc src_gcc obj_gcc/zlib
+obj_gcc/.lc_configured: | obj_gcc src_gcc
 	cd obj_gcc && ../src_gcc/configure $(FULL_GCC_CONFIG)
 	touch $@
 
@@ -230,11 +217,6 @@ obj_gcc/$(TARGET)/libgcc/libgcc.a: | obj_sysroot/.lc_headers
 
 obj_musl/.lc_built: | obj_musl/.lc_configured
 	cd obj_musl && $(MAKE) $(MUSL_VARS)
-	touch $@
-
-obj_zlib/.lc_built: | obj_zlib/.lc_configured
-	cd obj_zlib && $(MAKE)
-	cd obj_zlib && ln -sf ../src_zlib/*.h .
 	touch $@
 
 obj_sysroot/.lc_libs: | obj_musl/.lc_built
