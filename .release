@@ -19,8 +19,8 @@ github-release \
   --user "${USERNAME}" \
   --repo "${REPONAME}" \
   --tag "${TRAVIS_TAG}" \
-  --name "manifest-gcc-$GCCVER.txt" \
-  --file "dist/manifest/gcc-$GCCVER.txt" || true
+  --name "gcc-${gccver}-manifest.txt" \
+  --file "dist/gcc-${gccver}-manifest.txt" || true
 
 exec github-release \
   upload \
