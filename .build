@@ -78,14 +78,14 @@ rm -rf output
 rm -f dist/gcc-${gccver}-manifest.txt
 touch dist/gcc-${gccver}-manifest.txt
 
-printf 'binutils=%s\n' "${versions__binutils}"
-printf 'gcc=%s\n' "${versions__gcc}"
-printf 'gmp=%s\n' "${versions__gmp}"
-printf 'isl=%s\n' "${versions__isl}"
-printf 'linux=%s\n' "${versions__linux}"
-printf 'musl=%s\n' "${versions__musl}"
-printf 'mpc=%s\n' "${versions__mpc}"
-printf 'mpfr=%s\n' "${versions__mpfr}"
+printf 'binutils=%s\n' "${versions__binutils}" >> dist/gcc-${gccver}-manifest.txt
+printf 'gcc=%s\n' "${versions__gcc}" >> dist/gcc-${gccver}-manifest.txt
+printf 'gmp=%s\n' "${versions__gmp}" >> dist/gcc-${gccver}-manifest.txt
+printf 'isl=%s\n' "${versions__isl}" >> dist/gcc-${gccver}-manifest.txt
+printf 'linux=%s\n' "${versions__linux}" >> dist/gcc-${gccver}-manifest.txt
+printf 'musl=%s\n' "${versions__musl}" >> dist/gcc-${gccver}-manifest.txt
+printf 'mpc=%s\n' "${versions__mpc}" >> dist/gcc-${gccver}-manifest.txt
+printf 'mpfr=%s\n' "${versions__mpfr}" >> dist/gcc-${gccver}-manifest.txt
 
 rm -f dist/release.md
 touch dist/release.md
