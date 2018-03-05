@@ -89,5 +89,5 @@ printf 'mpfr=%s\n' "${versions__mpfr}" >> dist/gcc-${gccver}-manifest.txt
 
 rm -f dist/release.md
 touch dist/release.md
-printf 'Built using `musl-%s`, `linux-headers-%s`\n' "$versions__musl}" "${versions__linux}" >> dist/release.md
+printf 'Built using `musl-%s`, `linux-headers-%s`\n' "${versions__musl}" "${versions__linux}" >> dist/release.md
 
