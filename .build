@@ -16,7 +16,7 @@ versions__musl=1.1.19
 versions__gmp=6.1.2
 versions__mpc=1.1.0
 versions__mpfr=4.0.1
-versions__isl=0.19
+versions__isl=0.18
 versions__linux=4.4.10
 
 if command -v nproc 1>/dev/null 2>&1 ; then
