@@ -6,8 +6,8 @@ BINUTILS_VER = 2.30
 GCC_VER = 7.2.0
 MUSL_VER = 1.1.19
 GMP_VER = 6.1.2
-MPC_VER = 1.0.3
-MPFR_VER = 3.1.6
+MPC_VER = 1.1.0
+MPFR_VER = 4.1.0
 LINUX_VER = 4.4.10
 
 GNU_SITE = https://ftp.gnu.org/pub/gnu
