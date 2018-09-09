@@ -68,6 +68,13 @@ make -j${J}
 make install
 make clean
 
+if [ "${target}" = "x86_64-linux-musl" ] ; then
+    printf "int main(void) { return 0; }\n" > sanity-check.c
+    ./output/bin/x86_64-linux-musl-gcc -static -o sanity-check sanity-check.c
+    ./sanity-check
+    rm sanity-check.c sanity-check
+fi
+
 tar -cJf "dist/gcc-${versions__gcc}-${target}.tar.xz" \
   --owner 0 \
   --group 0 \
