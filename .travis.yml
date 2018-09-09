@@ -4,11 +4,11 @@ dist: trusty
 language: c
 
 env:
-  - GCCVER=7.2.0 TARGET=x86_64-linux-musl
-  - GCCVER=7.2.0 TARGET=i486-linux-musl
-  - GCCVER=7.2.0 TARGET=arm-linux-musleabi
-  - GCCVER=7.2.0 TARGET=arm-linux-musleabihf
-  - GCCVER=7.2.0 TARGET=aarch64-linux-musl
+  - GCCVER=7.3.0 TARGET=x86_64-linux-musl
+  - GCCVER=7.3.0 TARGET=i486-linux-musl
+  - GCCVER=7.3.0 TARGET=arm-linux-musleabi
+  - GCCVER=7.3.0 TARGET=arm-linux-musleabihf
+  - GCCVER=7.3.0 TARGET=aarch64-linux-musl
   - GCCVER=6.4.0 TARGET=x86_64-linux-musl
   - GCCVER=6.4.0 TARGET=i486-linux-musl
   - GCCVER=6.4.0 TARGET=arm-linux-musleabi
