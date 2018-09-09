@@ -14,31 +14,16 @@ env:
   - GCCVER=6.4.0 TARGET=arm-linux-musleabi
   - GCCVER=6.4.0 TARGET=arm-linux-musleabihf
   - GCCVER=6.4.0 TARGET=aarch64-linux-musl
-  - GCCVER=5.5.0 TARGET=x86_64-linux-musl
-  - GCCVER=5.5.0 TARGET=i486-linux-musl
-  - GCCVER=5.5.0 TARGET=arm-linux-musleabi
-  - GCCVER=5.5.0 TARGET=arm-linux-musleabihf
-  - GCCVER=5.5.0 TARGET=aarch64-linux-musl
-  - GCCVER=4.9.4 TARGET=x86_64-linux-musl
-  - GCCVER=4.9.4 TARGET=i486-linux-musl
-  - GCCVER=4.9.4 TARGET=arm-linux-musleabi
-  - GCCVER=4.9.4 TARGET=arm-linux-musleabihf
-  - GCCVER=4.9.4 TARGET=aarch64-linux-musl
-  - GCCVER=4.8.5 TARGET=x86_64-linux-musl
-  - GCCVER=4.8.5 TARGET=i486-linux-musl
-  - GCCVER=4.8.5 TARGET=arm-linux-musleabi
-  - GCCVER=4.8.5 TARGET=arm-linux-musleabihf
-  - GCCVER=4.8.5 TARGET=aarch64-linux-musl
 
 install:
   - mkdir -p tools/bin
   - curl -R -L -o tools/github-release.tar.bz2 https://github.com/aktau/github-release/releases/download/v0.7.2/linux-amd64-github-release.tar.bz2
-  - curl -R -L -o tools/gcc-4.9.4.tar.xz https://github.com/just-containers/musl-cross-make/releases/download/v9/gcc-4.9.4-x86_64-linux-musl.tar.xz
+  - curl -R -L -o tools/gcc-6.4.0.tar.xz https://github.com/just-containers/musl-cross-make/releases/download/v9/gcc-6.4.0-x86_64-linux-musl.tar.xz
   - curl -R -L -o tools/travis-tools-linux.tar.xz https://github.com/jprjr/travis-tools/releases/download/1.0.0/travis-tools-linux.tar.xz
   - tar xf tools/github-release.tar.bz2 -C tools/bin --strip-components=3
   - tar xf tools/travis-tools-linux.tar.xz -C tools
-  - tar xf tools/gcc-4.9.4.tar.xz -C tools
-  - rm -f tools/github-release.tar.bz2 tools/travis-tools-linux.tar.xz tools/gcc-4.9.4.tar.xz
+  - tar xf tools/gcc-6.4.0.tar.xz -C tools
+  - rm -f tools/github-release.tar.bz2 tools/travis-tools-linux.tar.xz tools/gcc-6.4.0.tar.xz
 
 script:
   - PATH="$(pwd)/tools/bin:$PATH" runlog -l /tmp/build-gcc-$GCCVER-$TARGET -- bash .build $TARGET $GCCVER 'COMMON_CONFIG += CC="x86_64-linux-musl-gcc -static --static" CXX="x86_64-linux-musl-g++ -static --static"'
