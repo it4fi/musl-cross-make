@@ -18,7 +18,7 @@ env:
 install:
   - mkdir -p tools/bin
   - curl -R -L -o tools/github-release.tar.bz2 https://github.com/aktau/github-release/releases/download/v0.7.2/linux-amd64-github-release.tar.bz2
-  - curl -R -L -o tools/gcc-6.4.0.tar.xz https://github.com/just-containers/musl-cross-make/releases/download/v9/gcc-6.4.0-x86_64-linux-musl.tar.xz
+  - curl -R -L -o tools/gcc-6.4.0.tar.xz https://github.com/just-containers/musl-cross-make/releases/download/v11/gcc-6.4.0-x86_64-linux-musl.tar.xz
   - curl -R -L -o tools/travis-tools-linux.tar.xz https://github.com/jprjr/travis-tools/releases/download/1.0.0/travis-tools-linux.tar.xz
   - tar xf tools/github-release.tar.bz2 -C tools/bin --strip-components=3
   - tar xf tools/travis-tools-linux.tar.xz -C tools
