@@ -1,14 +1,21 @@
-
+# Some locals {{{1
 SOURCES = sources
 
 CONFIG_SUB_REV = 3d5db9ebe860
-BINUTILS_VER = 2.30
-GCC_VER = 7.2.0
-MUSL_VER = 1.1.19
+
+# The current config.mak defines {{{2 \
+TARGET = aarch64-linux-musl           \
+DL_CMD = curl -C - -L -o
+
+# From the current config.mak:                  
+BINUTILS_VER = 2.31.1
+GCC_VER = 9.3.0
+MUSL_VER = 1.1.24
 GMP_VER = 6.1.2
 MPC_VER = 1.1.0
-MPFR_VER = 4.1.0
-LINUX_VER = 4.4.10
+MPFR_VER = 4.0.2
+ISL_VER = 0.19
+LINUX_VER = 5.4.0-1023-raspi # }}}2
 
 GNU_SITE = https://ftp.gnu.org/pub/gnu
 GCC_SITE = $(GNU_SITE)/gcc
@@ -37,6 +44,7 @@ REL_TOP = ../../..
 
 -include config.mak
 
+# More locals {{{1
 SRC_DIRS = gcc-$(GCC_VER) binutils-$(BINUTILS_VER) musl-$(MUSL_VER) \
 	$(if $(GMP_VER),gmp-$(GMP_VER)) \
 	$(if $(MPC_VER),mpc-$(MPC_VER)) \
@@ -44,17 +52,17 @@ SRC_DIRS = gcc-$(GCC_VER) binutils-$(BINUTILS_VER) musl-$(MUSL_VER) \
 	$(if $(ISL_VER),isl-$(ISL_VER)) \
 	$(if $(LINUX_VER),linux-$(LINUX_VER))
 
-all:
+all: # the default target {{{1
 
-clean:
+clean: # {{{1
 	rm -rf gcc-* binutils-* musl-* zlib-* gmp-* mpc-* mpfr-* isl-* build build-* linux-*
 
-distclean: clean
+distclean: clean # {{{1
 	rm -rf sources
 
 
-# Rules for downloading and verifying sources. Treat an external SOURCES path as
-# immutable and do not try to download anything into it.
+# Rules for downloading and verifying sources. {{{1
+# Treat an external SOURCES path as immutable and do not try to download anything into it.
 
 ifeq ($(SOURCES),sources)
 
@@ -65,6 +73,7 @@ $(patsubst hashes/%.sha1,$(SOURCES)/%,$(wildcard hashes/isl*)): SITE = $(ISL_SIT
 $(patsubst hashes/%.sha1,$(SOURCES)/%,$(wildcard hashes/binutils*)): SITE = $(BINUTILS_SITE)
 $(patsubst hashes/%.sha1,$(SOURCES)/%,$(wildcard hashes/gcc*)): SITE = $(GCC_SITE)/$(basename $(basename $(notdir $@)))
 $(patsubst hashes/%.sha1,$(SOURCES)/%,$(wildcard hashes/musl*)): SITE = $(MUSL_SITE)
+$(patsubst hashes/%.sha1,$(SOURCES)/%,$(wildcard hashes/linux-5*)): SITE = file:///usr/src
 $(patsubst hashes/%.sha1,$(SOURCES)/%,$(wildcard hashes/linux-4*)): SITE = $(LINUX_SITE)/v4.x
 $(patsubst hashes/%.sha1,$(SOURCES)/%,$(wildcard hashes/linux-3*)): SITE = $(LINUX_SITE)/v3.x
 $(patsubst hashes/%.sha1,$(SOURCES)/%,$(wildcard hashes/linux-2.6*)): SITE = $(LINUX_SITE)/v2.6

@@ -15,3 +15,8 @@
 /linux-*/
 /isl-*/
 /build/
+
+# am
+*.orig
+*.out
+*.vim
