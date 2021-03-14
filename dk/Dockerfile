@@ -1,6 +1,6 @@
 # Usage:
 #
-# cd dk; dk build -t musl:latest .; dk run -itv `pwd`/../output:/opt musl bash
+# cd dk; dk build -t musl:latest .; dk run -itv `pwd`/../output:/opt -v `pwd`/pp:/package/prog musl bash
 
 FROM ubuntu
 
@@ -18,4 +18,6 @@ ARG USER_GID=$USER_UID
 RUN groupadd --gid $USER_GID $USERNAME \
     && useradd -s /bin/bash --uid $USER_UID --gid $USER_GID -m $USERNAME \
     && chown -R $USERNAME:$USERNAME /home/$USERNAME \
-    && apt-get update && apt-get install make
+    && apt-get update && apt-get -y install make sudo \
+    && echo $USERNAME ALL=\(root\) NOPASSWD:ALL > /etc/sudoers.d/$USERNAME \
+    && chmod 0440 /etc/sudoers.d/$USERNAME
