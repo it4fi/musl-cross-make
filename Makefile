@@ -4,7 +4,7 @@ SOURCES = sources
 CONFIG_SUB_REV = 3d5db9ebe860
 
 # The current config.mak defines {{{2 \
-TARGET = aarch64-linux-musl           \
+TARGET = x86_64-linux-musl            \
 DL_CMD = curl -C - -L -o
 
 # From the current config.mak:                  
@@ -15,7 +15,7 @@ GMP_VER = 6.1.2
 MPC_VER = 1.1.0
 MPFR_VER = 4.0.2
 ISL_VER = 0.19
-LINUX_VER = 5.4.0-1023-raspi # }}}2
+LINUX_VER = 5.4.0-66 # }}}2
 
 GNU_SITE = https://ftp.gnu.org/pub/gnu
 GCC_SITE = $(GNU_SITE)/gcc
@@ -100,16 +100,15 @@ $(SOURCES)/%: hashes/%.sha1 | $(SOURCES)
 
 endif
 
+# Rules for extracting and patching sources, or checking them out from git. {{{1
 
-# Rules for extracting and patching sources, or checking them out from git.
-
-musl-git-%:
+musl-git-%: # {{{2
 	rm -rf $@.tmp
 	git clone -b $(patsubst musl-git-%,%,$@) $(MUSL_REPO) $@.tmp
 	cd $@.tmp && git fsck
 	mv $@.tmp $@
 
-%.orig: $(SOURCES)/%.tar.gz
+%.orig: $(SOURCES)/%.tar.gz # {{{2
 	case "$@" in */*) exit 1 ;; esac
 	rm -rf $@.tmp
 	mkdir $@.tmp
@@ -119,7 +118,7 @@ musl-git-%:
 	mv $@.tmp/$(patsubst %.orig,%,$@) $@
 	rm -rf $@.tmp
 
-%.orig: $(SOURCES)/%.tar.bz2
+%.orig: $(SOURCES)/%.tar.bz2 # {{{2
 	case "$@" in */*) exit 1 ;; esac
 	rm -rf $@.tmp
 	mkdir $@.tmp
@@ -129,7 +128,7 @@ musl-git-%:
 	mv $@.tmp/$(patsubst %.orig,%,$@) $@
 	rm -rf $@.tmp
 
-%.orig: $(SOURCES)/%.tar.xz
+%.orig: $(SOURCES)/%.tar.xz # {{{2
 	case "$@" in */*) exit 1 ;; esac
 	rm -rf $@.tmp
 	mkdir $@.tmp
@@ -139,7 +138,7 @@ musl-git-%:
 	mv $@.tmp/$(patsubst %.orig,%,$@) $@
 	rm -rf $@.tmp
 
-%: %.orig | $(SOURCES)/config.sub
+%: %.orig | $(SOURCES)/config.sub # {{{2
 	case "$@" in */*) exit 1 ;; esac
 	rm -rf $@.tmp
 	mkdir $@.tmp
@@ -147,16 +146,14 @@ musl-git-%:
 	test ! -d patches/$@ || cat patches/$@/* | ( cd $@.tmp && $(COWPATCH) -p1 )
 	test ! -f $</config.sub || ( rm -f $@.tmp/config.sub && cp -f $(SOURCES)/config.sub $@.tmp/ && chmod +x $@.tmp/config.sub )
 	rm -rf $@
-	mv $@.tmp $@
+	mv $@.tmp $@ # }}}2
 
-
-# Add deps for all patched source dirs on their patchsets
+# Add deps for all patched source dirs on their patchsets {{{1
 $(foreach dir,$(notdir $(basename $(basename $(basename $(wildcard hashes/*))))),$(eval $(dir): $$(wildcard patches/$(dir) patches/$(dir)/*)))
 
 extract_all: | $(SRC_DIRS)
 
-
-# Rules for building.
+# Rules for building. {{{1
 
 ifeq ($(TARGET),)
 
