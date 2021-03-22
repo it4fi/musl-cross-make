@@ -22,6 +22,7 @@ TARGET = x86_64-linux-musl
 
 # OUTPUT = /opt/cross
 # OUTPUT = /usr/local
+OUTPUT = ${PWD}/output
 
 # By default, latest supported release versions of musl and the toolchain
 # components are used. You can override those here, but the version selected
@@ -40,7 +41,8 @@ GMP_VER = 6.1.2
 MPC_VER = 1.1.0
 MPFR_VER = 4.0.2
 ISL_VER = 0.19
-LINUX_VER = 5.4.0-66
+LINUX_VER = 5.4.0-66-generic
+LINUX_HEADERS_SITE = file:///usr/src
 # LINUX_VER = 5.4.0-1023-raspi
 
 # By default source archives are downloaded with wget. curl is also an option.

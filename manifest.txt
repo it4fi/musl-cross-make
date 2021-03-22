@@ -1,0 +1,10 @@
+binutils=2.31.1
+gcc=9.3.0
+gmp=6.1.2
+isl=0.19
+headers=linux-headers-5.4.0-66-generic
+musl=1.1.24
+mpc=1.1.0
+mprf=4.0.2
+OUTPUT_DIR=/home/alec/process/it4fi/musl-cross-make/output
+DIST_DIR=/home/alec/process/it4fi/musl-cross-make/dist
