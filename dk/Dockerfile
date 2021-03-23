@@ -1,6 +1,8 @@
 # Usage:
 #
 # cd dk; dk build -t musl:latest .; dk run -itv `pwd`/../output:/opt -v `pwd`/pp:/package/prog musl bash
+#
+# TODO: ./configure --enable-slashpackage && make && sudo -E make install
 
 FROM ubuntu
 
