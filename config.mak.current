@@ -1,19 +1,9 @@
 #
-# config.mak.current - sample musl-cross-make configuration
-#
-# Copy to config.mak and edit as desired.
+# config.mak - musl-cross-make configuration
 #
 
-# There is no default TARGET; you must select one here or on the make
-# command line. Some examples:
-
-# TARGET = i486-linux-musl
-TARGET = x86_64-linux-musl
-# TARGET = arm-linux-musleabi
-# TARGET = arm-linux-musleabihf
-# TARGET = sh2eb-linux-muslfdpic
-# TARGET = aarch64-linux-musl
-# ...
+TARGET = aarch64-linux-musl
+# TARGET = x86_64-linux-musl
 
 # By default, cross compilers are installed to ./output under the top-level
 # musl-cross-make directory and can later be moved wherever you want them.
@@ -41,9 +31,8 @@ GMP_VER = 6.1.2
 MPC_VER = 1.1.0
 MPFR_VER = 4.0.2
 ISL_VER = 0.19
-LINUX_VER = 5.4.0-66-generic
+LINUX_VER = 5.4.0-1023-raspi
 LINUX_HEADERS_SITE = file:///usr/src
-# LINUX_VER = 5.4.0-1023-raspi
 
 # By default source archives are downloaded with wget. curl is also an option.
 

@@ -23,6 +23,7 @@
 *.vim
 gcc-9.3.0-aarch64-linux-musl.tar.xz
 gcc-manifest.txt
+manifest.txt
 /dk/pp/
 /dk/rootfs/home/skarnet/skalibs-*/
 /dist/
