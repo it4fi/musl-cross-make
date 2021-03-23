@@ -1,5 +1,5 @@
 #
-# config.mak.dist - sample musl-cross-make configuration
+# config.mak.current - sample musl-cross-make configuration
 #
 # Copy to config.mak and edit as desired.
 #
@@ -8,10 +8,11 @@
 # command line. Some examples:
 
 # TARGET = i486-linux-musl
-# TARGET = x86_64-linux-musl
+TARGET = x86_64-linux-musl
 # TARGET = arm-linux-musleabi
 # TARGET = arm-linux-musleabihf
 # TARGET = sh2eb-linux-muslfdpic
+# TARGET = aarch64-linux-musl
 # ...
 
 # By default, cross compilers are installed to ./output under the top-level
@@ -21,6 +22,7 @@
 
 # OUTPUT = /opt/cross
 # OUTPUT = /usr/local
+OUTPUT = ${PWD}/output
 
 # By default, latest supported release versions of musl and the toolchain
 # components are used. You can override those here, but the version selected
@@ -32,19 +34,21 @@
 # Setting a blank version for linux will suppress installation of kernel
 # headers, which are not needed unless compiling programs that use them.
 
-# BINUTILS_VER = 2.25.1
-# GCC_VER = 5.2.0
-# MUSL_VER = git-master
-# GMP_VER =
-# MPC_VER =
-# MPFR_VER =
-# ISL_VER =
-# LINUX_VER =
+BINUTILS_VER = 2.31.1
+GCC_VER = 9.3.0
+MUSL_VER = 1.1.24
+GMP_VER = 6.1.2
+MPC_VER = 1.1.0
+MPFR_VER = 4.0.2
+ISL_VER = 0.19
+LINUX_VER = 5.4.0-66-generic
+LINUX_HEADERS_SITE = file:///usr/src
+# LINUX_VER = 5.4.0-1023-raspi
 
 # By default source archives are downloaded with wget. curl is also an option.
 
 # DL_CMD = wget -c -O
-# DL_CMD = curl -C - -L -o
+DL_CMD = curl -C - -L -o
 
 # Something like the following can be used to produce a static-linked
 # toolchain that's deployable to any system with matching arch, using
