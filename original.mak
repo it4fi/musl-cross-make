@@ -53,6 +53,7 @@ SRC_DIRS = gcc-$(GCC_VER) binutils-$(BINUTILS_VER) musl-$(MUSL_VER) \
 	$(if $(LINUX_VER),linux-$(LINUX_VER))
 
 all: # the default target {{{1
+	@echo '- no recipe for $@'
 
 clean: # {{{1
 	rm -rf gcc-* binutils-* musl-* zlib-* gmp-* mpc-* mpfr-* isl-* build build-* linux-*
@@ -154,6 +155,7 @@ musl-git-%: # {{{2
 $(foreach dir,$(notdir $(basename $(basename $(basename $(wildcard hashes/*))))),$(eval $(dir): $$(wildcard patches/$(dir) patches/$(dir)/*)))
 
 extract_all: | $(SRC_DIRS)
+	@echo '- $@ built order-only prerequisites: $|'
 
 # Rules for building. {{{1
 
@@ -186,6 +188,7 @@ $(BUILD_DIR)/config.mak: | $(BUILD_DIR)
 	"-include $(REL_TOP)/config.mak"
 
 all: | $(SRC_DIRS) $(BUILD_DIR) $(BUILD_DIR)/Makefile $(BUILD_DIR)/config.mak
+	@echo '- $@ built order-only prerequisites: $|'
 	cd $(BUILD_DIR) && $(MAKE) $@
 
 install: | $(SRC_DIRS) $(BUILD_DIR) $(BUILD_DIR)/Makefile $(BUILD_DIR)/config.mak
@@ -193,4 +196,19 @@ install: | $(SRC_DIRS) $(BUILD_DIR) $(BUILD_DIR)/Makefile $(BUILD_DIR)/config.ma
 
 endif
 
+# Note: .SECONDARY with no prerequisites causes all targets to be treated {{{1
+# as secondary (i.e., no target is removed because it is considered intermediate). 
 .SECONDARY:
+
+# Notes {{{1
+#
+# - all built order-only prerequisites:
+#     gcc-9.3.0
+#     binutils-2.31.1
+#     musl-1.1.24 gmp-6.1.2
+#     mpc-1.1.0 mpfr-4.0.2
+#     isl-0.19
+#     linux-5.4.0-66-generic
+#     build/local/x86_64-linux-musl
+#     build/local/x86_64-linux-musl/Makefile
+#     build/local/x86_64-linux-musl/config.mak
