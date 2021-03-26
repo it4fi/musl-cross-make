@@ -2,6 +2,9 @@
 SOURCES = sources
 
 CONFIG_SUB_REV = 3d5db9ebe860
+CS_HOST = http://git.savannah.gnu.org/gitweb/
+CS_PARMS = ?p=config.git;a=blob_plain;f=config.sub;hb=$(CONFIG_SUB_REV)
+CONFIG_SUB_URL = ${CS_HOST}$(CS_PARMS)
 
 # The current config.mak defines {{{2 \
 TARGET = x86_64-linux-musl            \
@@ -86,7 +89,7 @@ $(SOURCES):
 
 $(SOURCES)/config.sub: | $(SOURCES)
 	mkdir -p $@.tmp
-	cd $@.tmp && $(DL_CMD) $(notdir $@) "http://git.savannah.gnu.org/gitweb/?p=config.git;a=blob_plain;f=config.sub;hb=$(CONFIG_SUB_REV)"
+	cd $@.tmp && $(DL_CMD) $(notdir $@) "$(CONFIG_SUB_URL)"
 	cd $@.tmp && touch $(notdir $@)
 	cd $@.tmp && $(SHASUM) -c $(CURDIR)/hashes/$(notdir $@).$(CONFIG_SUB_REV).sha1
 	mv $@.tmp/$(notdir $@) $@
