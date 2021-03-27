@@ -66,7 +66,8 @@ distclean: clean # {{{1
 
 
 # Rules for downloading and verifying sources. {{{1
-# Treat an external SOURCES path as immutable and do not try to download anything into it.
+# Treat an external SOURCES path as immutable and do not try to download anything
+# into it.
 
 ifeq ($(SOURCES),sources)
 
